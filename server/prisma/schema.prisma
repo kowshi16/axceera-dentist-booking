@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id          Int      @id @unique @default(autoincrement())
+  email       String   @unique
+  password    String
+  bio         String?
+  username    String?
+  firstName   String?
+  lastName    String?
+  roleId      Int?     
+  role        Role?    @relation(fields: [roleId], references: [id], onDelete: SetNull)
+  createdBy   Int?
+  statusUpdatedBy  Int?  
+  Auth        Auth[]
+  Token       Token[]
+}
+
+model Dentist {
+  id          Int      @id @unique @default(autoincrement())
+  fullName    String
+  email       String   @unique
+  address     String?
+  mobileNo    String
+  ratings     Decimal  @db.Decimal(3, 1)
+  qualification   String
+  about       String
+  reviews     String?
+  experienceYears Decimal @db.Decimal(3, 1)
+}
+
+model Role {
+  id          Int          @id @unique @default(autoincrement())
+  name        String       @unique
+  users       User[]       // One role to many users
+  permissions RolePermission[] // Relation to the junction table
+}
+
+model Permission {
+  id          Int    @id @unique @default(autoincrement())
+  name        String @unique
+  roles       RolePermission[] // Relation to the junction table
+}
+
+model RolePermission {
+  roleId       Int
+  permissionId Int
+  role        Role        @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission  Permission  @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+model Auth {
+  id        Int      @id @unique @default(autoincrement())
+  token     String
+  expiresAt DateTime
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  updatedAt DateTime @default(now()) @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model Token {
+  id        Int      @id @unique @default(autoincrement())
+  token     String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  expiresAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  createdAt DateTime @default(now())
+}
+
