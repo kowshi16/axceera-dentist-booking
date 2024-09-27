@@ -97,7 +97,14 @@ export class DentistService {
     // Update Dentist data
     return this.prisma.dentist.update({
       where: { id },
-      data: updateDentistDto,
+      data: {
+        fullName: updateDentistDto.fullName,
+        address: updateDentistDto.address,
+        mobileNo: updateDentistDto.mobileNo,
+        qualification: updateDentistDto.qualification,
+        about: updateDentistDto.about,
+        experienceYears: new Decimal(updateDentistDto.experienceYears)
+      },
     });
   }
 
