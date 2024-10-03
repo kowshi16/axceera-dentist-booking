@@ -1,6 +1,5 @@
 import { Injectable, MethodNotAllowedException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { TypesenseService } from 'src/typesense.service';
 import { AuthService } from '../auth/auth.service';
 import { RoleService } from '../role/role.service';
 import { EmailService } from 'src/email.service';
@@ -13,7 +12,6 @@ import { UpdateDentistDto } from './dto/update-dentist.dto';
 export class DentistService {
   constructor(
     private prisma: PrismaService,
-    private readonly typesenseService: TypesenseService,
     private readonly authService: AuthService,
     private readonly emailService: EmailService,
     private readonly roleService: RoleService,

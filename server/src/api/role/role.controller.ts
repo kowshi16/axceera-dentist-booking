@@ -12,6 +12,7 @@ import { RoleDto } from './dto/role.dto';
 import { RolePermissionDto } from './dto/role-permission.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/common/decorator/roles.decorator';
+import { Public } from 'src/common/decorator/public.decorator';
 
 @ApiTags('Roles')
 @Controller('role')
@@ -32,9 +33,10 @@ export class RoleController {
     return this.roleService.findAll();
   }
 
-  @Roles('admin')
+  //@Roles('admin')
   @Post()
-  @ApiBearerAuth()
+  @Public()
+  //@ApiBearerAuth()
   async createRole(@Body() createRoleDto: RoleDto) {
     return this.roleService.createRole(createRoleDto);
   }

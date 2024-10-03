@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { User, Prisma } from '@prisma/client';
-import { TypesenseService } from 'src/typesense.service';
+//import { TypesenseService } from 'src/typesense.service';
 import { AuthService } from '../auth/auth.service';
 import { RoleService } from '../role/role.service';
 import { Roles } from 'src/common/enums/roles.enum';
@@ -20,7 +20,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class UserService {
   constructor(
     private prisma: PrismaService,
-    private readonly typesenseService: TypesenseService,
+    //private readonly typesenseService: TypesenseService,
     private readonly authService: AuthService,
     private readonly emailService: EmailService,
     private readonly roleService: RoleService,

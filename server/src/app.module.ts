@@ -7,6 +7,7 @@ import { TokenModule } from './api/token/token.module';
 import { RoleModule } from './api/role/role.module';
 import { PermissionModule } from './api/permission/permission.module';
 import { DentistModule } from './api/dentist/dentist.module';
+import { TypesenseModule } from './api/typesense/typesense.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { DentistModule } from './api/dentist/dentist.module';
     RoleModule,
     PermissionModule,
     DentistModule,
+    TypesenseModule
   ],
   controllers: [AuthController],
   providers: [AuthService],

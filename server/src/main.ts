@@ -8,6 +8,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { HttpExceptionFilter } from './common/http.exception-filters/http.exception-filters';
 import { UserService } from './api/user/user.service';
+import { TypesenseService } from './api/typesense/typesense.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -36,6 +37,7 @@ async function bootstrap() {
   const reflector = app.get(Reflector);
   const authService = app.get(AuthService);
   const userService = app.get(UserService);
+  const typesenseService = app.get(TypesenseService);
 
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
@@ -43,6 +45,12 @@ async function bootstrap() {
   app.useGlobalGuards(
     new AuthorizationGuard(reflector, authService, userService),
   );
+  app.enableCors({
+    origin: 'http://localhost:3000', // Your Next.js frontend URL
+    credentials: true,
+  });
+  await typesenseService.createClient();
+  typesenseService.streamDentistCollection();
   await app.listen(8080);
 }
 bootstrap();
